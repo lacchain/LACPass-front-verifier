@@ -15,7 +15,6 @@ function parseJwt(token) {
 }
 
 window.onload = function () {
-  console.log("starting program ...");
   $.i18n().load({
     en: {
       next: "Next ›",
@@ -176,7 +175,8 @@ window.onload = function () {
 
     itemsToRemove.map((item) => {
       var element = document.getElementById(item);
-      element.parentNode.removeChild(element);
+      if (element && element.parentNode)
+        element.parentNode.removeChild(element);
     });
     $("#step1").removeClass("showx").addClass("hide");
     $("#result").addClass("showx").show();
@@ -259,12 +259,17 @@ window.onload = function () {
     return { width: qrboxEdgeSize, height: qrboxEdgeSize };
   };
 
-  var html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
-    fps: 10,
-    qrbox: qrboxFunction,
-    rememberLastUsedCamera: false,
-  });
-  html5QrcodeScanner.render(onScanSuccess, onScanError);
+  function initializeQrCodeScanner() {
+    html5QrcodeScanner = new Html5QrcodeScanner("qr-reader", {
+      fps: 10,
+      qrbox: qrboxFunction,
+      rememberLastUsedCamera: false,
+    });
+    html5QrcodeScanner.render(onScanSuccess, onScanError);
+  }
+
+  let html5QrcodeScanner;
+  initializeQrCodeScanner();
 
   // const decodedText =
   //   "HC1:6BF1.N3DBSNAP53-OPX:5I Q-N0V0PUF247V.WM3G5GRRDN1:N9WC4/E2ZL7-/T.MN6.9RN79%2O72NB0XY6$BLZ$4R92OTPP74EE4H*ORW7:0P5IORZ69T4*U4CYS+D3MZ8J5C5XQ5VP7ES9UU:A3YZR%3LOU9TKRE8V+4O-3WAX24.MQ*6JRH.0HB.2*IBOSE%NLTFIW G:3577UX-3F7H%:D7L2SP3KXS0CHQI0VC3ZLC%O6I9U8M4R81U GFDOHWHKEFXBG+LRGV6EE5SYAFGI JIVISLKHB58.YN/L8B1ALO4.O20FJGYK7:B3/Q+RHZ97$QUG45:WV2 3UK011JZ42+SU8EFF+1/1J%AJT4OZQ0UGFNDIT9IXR9.63/NB6 1I%D488+7BJO309A.9T7D9R9GQ-SRWQ9GRHF7MSUX.BFDWO/OP9F0YGO6A/%N*N0YNCN*L*K6/IS$LC/98D2095I3KEDKJN%S.T6*B8 TUT99K%82WQN170PHWOQ7OAM0GI74YB0FB47CWAM2DQEM-DNH2QX5MQTT%8EVG55G9RT10JW-H6%L3Z8EMK:$I2CI%$P6KT9*8F68OL5QAH+CC RV21V QEC3K74K$S0WTN3UU+U9W5C-NO8D8A7JEWABQFAOK.GAYLVB31E56YLG4H9INAQA5T76MJUR%NJZH/A7%ODS7RFVEAB8-75GE4XQA9KA7WGZ*3+8O6EW:EJR/RO*9. ETA3933VN9ZQQAEC94NJLT2AQOCDF0TAGBF:192S45VG3AT 3FB1O/UO4RC 6B6RC$2.XO9IM5/NR.IFNCB-7AQP*FJSLJS+RF2TQUBHVH1QUQ K5H2L6AC.1SAVA*AFYDIVJZBOZCR*9F-UUFXRENHFD33P7/9US6TB+TWHROW6FPV4%4 IB*PN964Y6UJ:O1M39RBWWR/:5*:NNC39JN0:7ML9VHIL.NNOSQ2IQTK*8J-7RYNR4%TQEH82CY%NP/U*HOFU1A5GFP8%$MJ:PRUR9YEXXU4RHB+71GFXFC92VEZEDXN5%V$IQALQ3ATTG1N 7HNE3:E477GJQ-/3UI6T.6PC8*GC$KMNX9 /O-8SE+1M 0 P1K2";
@@ -276,6 +281,9 @@ window.onload = function () {
     $(window).scrollTop(0);
   });
   $("#button1b").click(function () {
+    html5QrcodeScanner.clear().then(() => {
+      initializeQrCodeScanner();
+    });
     $("#result").removeClass("showx").addClass("hide");
     $("#step1").removeClass("hide").addClass("showx").show();
     lastResult = "";
