@@ -160,6 +160,7 @@ window.onload = function () {
         $("#national").prop("checked", true);
         $("#eu-dcc-item").removeClass("hide").addClass("showx");
         itemsToRemove = items.filter((item) => item !== "eu-dcc-item");
+        setWhoDDCCModal();
         break;
       case "National":
         $("#national").prop("checked", true);
@@ -179,7 +180,9 @@ window.onload = function () {
     });
     $("#step1").removeClass("showx").addClass("hide");
     $("#result").addClass("showx").show();
+  }
 
+  function setWhoDDCCModal() {
     /**render modal */
     // Get the modal
     const modal = document.getElementById("myModal");
@@ -206,10 +209,10 @@ window.onload = function () {
         modal.style.display = "none";
       }
     };
-    /** end render modal */
     /**activate modal */
     modal.style.display = "block";
   }
+
   function onScanSuccess(decodedText, decodedResult) {
     if (html5QrcodeScanner.getState() !== Html5QrcodeScannerState.NOT_STARTED) {
       // Add this check to ensure success callback is not being called

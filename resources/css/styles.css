@@ -570,7 +570,7 @@ a:hover,
 .btn:visited,
 button.html5-qrcode-element:hover,
 span.html5-qrcode-element:hover {
-  /*pseudo classes:link, visited, active and hover*/
+  cursor: pointer;
   display: inline-block;
   font-weight: 400;
   /* padding: 10px 30px; */
