@@ -1,0 +1,31 @@
+@media only screen and (max-width: 767px) {
+  .lang-select {
+    width: 30%;
+  }
+  .element {
+    width: 90%;
+  }
+  .dataLabel {
+    width: 100%;
+  }
+  .contentData {
+    width: 97%;
+    margin-left: 3%;
+  }
+  ul.ks-cboxtags li label::before {
+    right: 15%;
+  }
+  .a {
+    width: fit-content;
+    padding: 1px, 5px;
+  }
+  .modal-content {
+    width: 85%;
+  }
+
+  button.html5-qrcode-element {
+    margin-bottom: 10%;
+    display: inline-block;
+    padding: 2px 6px; /*top bottom left right*/
+  }
+}
