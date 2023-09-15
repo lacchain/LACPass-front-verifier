@@ -395,7 +395,8 @@ ul.ks-cboxtags li label::before {
 }
 
 /*******************************/
-.lang-select {
+.lang-select,
+select.html5-qrcode-element {
   /* background-color: #e5e5e5; */
   color: #808080;
   width: 13%;
@@ -409,7 +410,17 @@ ul.ks-cboxtags li label::before {
   transition: background-color 0.2s, border 0.2s, color 0.2s;
 }
 
-.lang-select:hover {
+select.html5-qrcode-element {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+  margin: 1% auto;
+}
+
+.lang-select:hover,
+select.html5-qrcode-element:hover {
   border: 1px solid #808080;
   cursor: pointer;
   font-weight: 400;
