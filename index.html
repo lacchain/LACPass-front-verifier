@@ -85,65 +85,22 @@
                       <img src="mapa.jpg" alt="Map" width="100%" />
                     </div>
                     <div class="details">
-                      <span data-i18n="interoperability"></span>
-                      <ul class="ks-cboxtags p-0 mt-3">
-                        <li id="no-vaccination-standard-item">
-                          <input type="checkbox" id="none" value="Order one" />
-                          <label for="none" data-i18n="none"
-                            >No vaccination standard</label
-                          >
-                        </li>
-                        <li id="who-ddcc-standard-item">
-                          <input
-                            type="checkbox"
-                            id="who-dcc"
-                            value="Order one"
-                          />
-                          <label for="who-dcc" data-i18n="who_dcc"
-                            >WHO DDCC standard</label
-                          >
-                        </li>
-                        <li id="divoc-standar-item">
-                          <input type="checkbox" id="divoc" value="Order Two" />
-                          <label for="divoc" data-i18n="divoc"
-                            >DIVOC standard</label
-                          >
-                        </li>
-                        <li id="smart-health-card-standard-item">
-                          <input type="checkbox" id="shc" value="Order Two" />
-                          <label for="shc" data-i18n="shc"
-                            >Smart Health Card standard</label
-                          >
-                        </li>
-                        <li id="eu-dcc-item" class="item-in-list">
-                          <div class="label-container">
-                            <input
-                              type="checkbox"
-                              id="eu-dcc"
-                              value="Order Two"
-                            />
-                            <label class="label" for="eu-dcc" data-i18n="eu_dcc"
-                              >EU DCC standard</label
-                            >
-                          </div>
-                          <!-- <button id="myBtn" class="btn">View Details</button> -->
-                          <a
-                            class="btn a"
-                            id="myBtn"
-                            data-i18n="viewDetailsText"
-                          ></a>
-                        </li>
-                        <li id="national-interoperability-item">
-                          <input
-                            type="checkbox"
-                            id="national"
-                            value="Order Two"
-                          />
-                          <label for="national" data-i18n="national"
-                            >Only national interoperability</label
-                          >
-                        </li>
-                      </ul>
+                      <span
+                        data-i18n="interoperability"
+                        id="interoperabilityMessageId"
+                      ></span>
+                      <ul
+                        id="certificateTypesId"
+                        class="ks-cboxtags p-0 mt-3"
+                      ></ul>
+                      <a
+                        class="btn a"
+                        id="viewDetailsBtnId"
+                        data-i18n="viewDetailsText"
+                      ></a>
+                      <a class="btn a" id="loadingId">
+                        <i class="fa fa-refresh fa-spin"></i> loading</a
+                      >
                     </div>
                   </div>
                 </div>
@@ -217,23 +174,43 @@
         <div class="modal-content">
           <div class="wrapper">
             <div class="qr-sub-block">
+              <div class="wrapper">
+                <div
+                  style="
+                    margin: auto;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: center;
+                  "
+                >
+                  <img
+                    id="isCertificateValidId"
+                    src="./resources/img/cross-sign.jpg"
+                    alt="logo"
+                    class="mb-1"
+                    style="max-width: 10%"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="qr-sub-block">
               <div class="subtitle" data-i18n="identificationDataLabel"></div>
               <div class="identificationData">
                 <div class="element">
-                  <div class="dataLabel" , data-i18n="nameLabel"></div>
-                  <div class="contentData">John Doe</div>
+                  <div class="dataLabel" data-i18n="nameLabel"></div>
+                  <div class="contentData" id="patientNameId">John Doe</div>
                 </div>
                 <div class="element">
                   <div class="dataLabel" data-i18n="dateOfBirthLabel"></div>
-                  <div class="contentData">2009-06-14</div>
+                  <div class="contentData" id="dateOfBirthId">0000-00-00</div>
                 </div>
                 <div class="element">
                   <div class="dataLabel" data-i18n="genderLabel"></div>
-                  <div class="contentData">Male</div>
+                  <div class="contentData" id="genderId">XXXX</div>
                 </div>
                 <div class="element">
                   <div class="dataLabel" data-i18n="documentNumberLabel"></div>
-                  <div class="contentData">UY/BD457d7523</div>
+                  <div class="contentData" id="documentNumberId">XXXX</div>
                 </div>
               </div>
             </div>
@@ -246,13 +223,11 @@
                   class="dataLabel"
                   data-i18n="certificateIdentifierLabel"
                 ></div>
-                <div class="contentData">6634</div>
+                <div class="contentData" id="certificateIdentifierId">XXXX</div>
               </div>
               <div class="element">
                 <div class="dataLabel" data-i18n="certificateIssuerLabel"></div>
-                <div class="contentData">
-                  Organization/Seguro Público Nacional
-                </div>
+                <div class="contentData" id="certificateIssuerId">XXX</div>
               </div>
             </div>
           </div>
@@ -262,27 +237,29 @@
             <div class="identificationData">
               <div class="element">
                 <div class="dataLabel" data-i18n="productNameLabel"></div>
-                <div class="contentData">COVID-19/Vaccine AstraZeneca</div>
+                <div class="contentData" id="brandCodeId">XXXX</div>
               </div>
               <div class="element">
                 <div class="dataLabel" data-i18n="atcCodeLabel"></div>
-                <div class="contentData">J07BBO4</div>
+                <div class="contentData" id="atcCodeId">XXXX</div>
               </div>
               <div class="element">
                 <div class="dataLabel" data-i18n="vaccinationCentreLabel"></div>
-                <div class="contentData">Vaccination Site</div>
+                <div class="contentData" id="vaccinationCentreId">XXXX</div>
               </div>
               <div class="element">
                 <div class="dataLabel" data-i18n="numberOfDosesLabel"></div>
-                <div class="contentData">1</div>
+                <div class="contentData" id="numberOfDosesId">XXXX</div>
               </div>
               <div class="element">
                 <div class="dataLabel" data-i18n="dateOfVaccinationLabel"></div>
-                <div class="contentData">2021-04-25</div>
+                <div class="contentData" id="dateOfVaccinationId">
+                  0000-00-00
+                </div>
               </div>
               <div class="element">
                 <div class="dataLabel" data-i18n="batchNumberLabel"></div>
-                <div class="contentData">PO1234</div>
+                <div class="contentData" id="batchId">XXXX</div>
               </div>
             </div>
           </div>
@@ -314,4 +291,5 @@
   ></script>
   <script src="resources/js/qr-processor.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
+  <script src="resources/js/api-interactions.js"></script>
 </html>

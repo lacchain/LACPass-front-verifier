@@ -14,6 +14,78 @@ function parseJwt(token) {
   return JSON.parse(jsonPayload);
 }
 
+const itemsCatalog = new Map();
+itemsCatalog.set(
+  "no-vaccination-standard-item",
+  `<li id="no-vaccination-standard-item">
+<input type="checkbox" id="none" value="Order one" />
+<label for="none" data-i18n="none"
+  >No vaccination standard</label
+>
+</li>`
+);
+itemsCatalog.set(
+  "who-ddcc-standard-item",
+  `<li id="who-ddcc-standard-item" class="item-in-list">
+  <div class="label-container">
+    <input
+      type="checkbox"
+      id="who-dcc"
+      value="Order one"
+    />
+    <label for="who-dcc" data-i18n="who_dcc"
+      >WHO DDCC standard</label
+    >
+  </div>
+</li>`
+);
+itemsCatalog.set(
+  "divoc-standar-item",
+  `<li id="divoc-standar-item">
+<input type="checkbox" id="divoc" value="Order Two" />
+<label for="divoc" data-i18n="divoc"
+  >DIVOC standard</label
+>
+</li>`
+);
+itemsCatalog.set(
+  "smart-health-card-standard-item",
+  `<li id="smart-health-card-standard-item">
+  <input type="checkbox" id="shc" value="Order Two" />
+  <label for="shc" data-i18n="shc"
+    >Smart Health Card standard</label
+  >
+</li>`
+);
+itemsCatalog.set(
+  "eu-dcc-item",
+  `<li id="eu-dcc-item" class="item-in-list">
+  <div class="label-container">
+    <input
+      type="checkbox"
+      id="eu-dcc"
+      value="Order Two"
+    />
+    <label class="label" for="eu-dcc" data-i18n="eu_dcc"
+      >EU DCC standard</label
+    >
+  </div>
+</li>`
+);
+itemsCatalog.set(
+  "national-interoperability-item",
+  `<li id="national-interoperability-item">
+  <input
+    type="checkbox"
+    id="national"
+    value="Order Two"
+  />
+  <label for="national" data-i18n="national"
+    >Only national interoperability</label
+  >
+</li>`
+);
+
 window.onload = function () {
   $.i18n().load({
     en: {
@@ -93,7 +165,6 @@ window.onload = function () {
     },
   });
 
-  // var resultContainer = document.getElementById("qr-reader-results");
   var lastResult,
     countResults = 0;
   function renderResults(decodedText) {
@@ -103,7 +174,7 @@ window.onload = function () {
       decodedText.startsWith("https://sso.panamadigital.gob.pa") ||
       decodedText.startsWith("https://carnetdigital.mspbs.gov.py")
     )
-      compatibility = "EU-DCC";
+      compatibility = "WHO-DCC";
 
     if (
       decodedText.startsWith(
@@ -138,6 +209,8 @@ window.onload = function () {
     $("#none").prop("checked", false);
     $("#divoc").prop("checked", false);
 
+    document.getElementById("viewDetailsBtnId").style.display = "none";
+
     const items = [
       "no-vaccination-standard-item",
       "who-ddcc-standard-item",
@@ -146,6 +219,18 @@ window.onload = function () {
       "eu-dcc-item",
       "national-interoperability-item",
     ];
+    items.map((item) => {
+      var element = document.getElementById(item);
+      if (element && element.parentNode)
+        element.parentNode.removeChild(element);
+    });
+    const certificateTypesContainer =
+      document.getElementById("certificateTypesId");
+    itemsCatalog.forEach((value) => {
+      const node = document.createElement("li");
+      node.innerHTML = value;
+      certificateTypesContainer.appendChild(node);
+    });
 
     let itemsToRemove = [];
 
@@ -153,23 +238,33 @@ window.onload = function () {
       case "DIVOC":
         $("#divoc").prop("checked", true);
         $("#national").prop("checked", true);
+        itemsToRemove = items.filter((item) => item !== "divoc-standar-item");
         break;
-      case "EU-DCC":
-        $("#eu-dcc").prop("checked", true);
-        $("#national").prop("checked", true);
-        $("#eu-dcc-item").removeClass("hide").addClass("showx");
-        itemsToRemove = items.filter((item) => item !== "eu-dcc-item");
-        setWhoDDCCModal();
+      case "WHO-DCC":
+        $("#who-dcc").prop("checked", true);
+        itemsToRemove = items.filter(
+          (item) => item !== "who-ddcc-standard-item"
+        );
+        callApi(decodedText);
         break;
       case "National":
         $("#national").prop("checked", true);
+        itemsToRemove = items.filter(
+          (item) => item !== "national-interoperability-item"
+        );
         break;
       case "SHC":
         $("#shc").prop("checked", true);
         $("#national").prop("checked", true);
+        itemsToRemove = items.filter(
+          (item) => item !== "smart-health-card-standard-item"
+        );
         break;
       default:
         $("#none").prop("checked", true);
+        itemsToRemove = items;
+        document.getElementById("interoperabilityMessageId").innerHTML =
+          "Unsupported/No soportado"; // TODO: improve
         break;
     }
 
@@ -182,13 +277,109 @@ window.onload = function () {
     $("#result").addClass("showx").show();
   }
 
+  function callApi(payload) {
+    document.getElementById("viewDetailsBtnId").style.display = "none";
+    document.getElementById("loadingId").style.display = "inline-block";
+    app.client.request(
+      undefined,
+      "/certificates/verify-b45",
+      "POST",
+      undefined,
+      payload,
+      (newStatusCode, newResponsePayload) => {
+        //display the error on the form if needed
+        if (newStatusCode !== 200) {
+          // TODO: handle error properly
+          // //set the formError field  with the error test
+          // document.querySelector("#" + formId + " .formError").innerHTML =
+          //   "Sorry,an error has occurred. Please try again";
+          // // Show (unhide) the form error field on the form
+          // document.querySelector("#" + formId + " .formError").style.display =
+          //   "block";
+        } else {
+          setFields(newResponsePayload);
+          setWhoDDCCModal();
+          document.getElementById("loadingId").style.display = "none";
+          document.getElementById("viewDetailsBtnId").style.display =
+            "inline-block";
+        }
+      }
+    );
+  }
+  function setFields(parsedResponse) {
+    const { data } = parsedResponse;
+    if (!data) {
+      // TODO: show error message
+    }
+    const { isValid, ddccCoreDataSet } = data;
+    if (!isValid) {
+      // TODO: show icon for invalid
+      $("#who-dcc").prop("checked", false);
+    }
+
+    const {
+      birthDate,
+      certificate,
+      identifier,
+      name,
+      // resourceType,
+      sex,
+      vaccination,
+    } = ddccCoreDataSet;
+
+    const { hcid, issuer } = certificate;
+    if (!hcid || !issuer) {
+      // TODO: show error message
+    }
+    const { value } = hcid;
+    if (!value) {
+      // TODO: show error message
+    }
+    const issuerIdentifierValue =
+      issuer.identifier && issuer.identifier.value
+        ? issuer.identifier.value
+        : null;
+    if (!issuerIdentifierValue) {
+      // TODO: show error message
+    }
+    const { brand, centre, country, date, dose, lot, vaccine } = vaccination;
+    const brandCode = brand && brand.code ? brand.code : null;
+    if (!brandCode) {
+      // TODO: show error message
+    }
+    const countryCode = country && country.code ? country.code : null;
+    if (!countryCode) {
+      // TODO: show error message
+    }
+    const vaccineCode = vaccine && vaccine.code ? vaccine.code : null;
+    if (!vaccineCode) {
+      // TODO: show error message
+    }
+
+    document.getElementById("patientNameId").innerHTML = name;
+    document.getElementById("dateOfBirthId").innerHTML = birthDate;
+    document.getElementById("genderId").innerHTML = sex;
+    document.getElementById("documentNumberId").innerHTML = identifier;
+    document.getElementById("certificateIdentifierId").innerHTML = value;
+    document.getElementById("certificateIssuerId").innerHTML =
+      issuerIdentifierValue;
+    document.getElementById("brandCodeId").innerHTML = brandCode;
+    document.getElementById("atcCodeId").innerHTML = vaccineCode;
+    document.getElementById("vaccinationCentreId").innerHTML = centre;
+    document.getElementById("numberOfDosesId").innerHTML = dose;
+    document.getElementById("dateOfVaccinationId").innerHTML = date;
+    document.getElementById("batchId").innerHTML = lot;
+    document.getElementById("isCertificateValidId").src =
+      "./resources/img/check_3472620.png";
+  }
+
   function setWhoDDCCModal() {
     /**render modal */
     // Get the modal
     const modal = document.getElementById("myModal");
 
     // Get the button that opens the modal
-    const btn = document.getElementById("myBtn");
+    const btn = document.getElementById("viewDetailsBtnId");
 
     // Get the <span> element that closes the modal
     const span = document.getElementsByClassName("close")[0];
@@ -233,11 +424,7 @@ window.onload = function () {
   }
 
   // Optional callback for error, can be ignored.
-  function onScanError(qrCodeError) {
-    console.log(`Scan error ....`, qrCodeError);
-    // This callback would be called in case of qr code scan error or setup error.
-    // You can avoid this callback completely, as it can be very verbose in nature.
-  }
+  function onScanError(qrCodeError) {}
 
   var qrboxFunction = function (viewfinderWidth, viewfinderHeight) {
     // Square QR Box, with size = 80% of the min edge.
@@ -270,10 +457,6 @@ window.onload = function () {
 
   let html5QrcodeScanner;
   initializeQrCodeScanner();
-
-  // const decodedText =
-  //   "HC1:6BF1.N3DBSNAP53-OPX:5I Q-N0V0PUF247V.WM3G5GRRDN1:N9WC4/E2ZL7-/T.MN6.9RN79%2O72NB0XY6$BLZ$4R92OTPP74EE4H*ORW7:0P5IORZ69T4*U4CYS+D3MZ8J5C5XQ5VP7ES9UU:A3YZR%3LOU9TKRE8V+4O-3WAX24.MQ*6JRH.0HB.2*IBOSE%NLTFIW G:3577UX-3F7H%:D7L2SP3KXS0CHQI0VC3ZLC%O6I9U8M4R81U GFDOHWHKEFXBG+LRGV6EE5SYAFGI JIVISLKHB58.YN/L8B1ALO4.O20FJGYK7:B3/Q+RHZ97$QUG45:WV2 3UK011JZ42+SU8EFF+1/1J%AJT4OZQ0UGFNDIT9IXR9.63/NB6 1I%D488+7BJO309A.9T7D9R9GQ-SRWQ9GRHF7MSUX.BFDWO/OP9F0YGO6A/%N*N0YNCN*L*K6/IS$LC/98D2095I3KEDKJN%S.T6*B8 TUT99K%82WQN170PHWOQ7OAM0GI74YB0FB47CWAM2DQEM-DNH2QX5MQTT%8EVG55G9RT10JW-H6%L3Z8EMK:$I2CI%$P6KT9*8F68OL5QAH+CC RV21V QEC3K74K$S0WTN3UU+U9W5C-NO8D8A7JEWABQFAOK.GAYLVB31E56YLG4H9INAQA5T76MJUR%NJZH/A7%ODS7RFVEAB8-75GE4XQA9KA7WGZ*3+8O6EW:EJR/RO*9. ETA3933VN9ZQQAEC94NJLT2AQOCDF0TAGBF:192S45VG3AT 3FB1O/UO4RC 6B6RC$2.XO9IM5/NR.IFNCB-7AQP*FJSLJS+RF2TQUBHVH1QUQ K5H2L6AC.1SAVA*AFYDIVJZBOZCR*9F-UUFXRENHFD33P7/9US6TB+TWHROW6FPV4%4 IB*PN964Y6UJ:O1M39RBWWR/:5*:NNC39JN0:7ML9VHIL.NNOSQ2IQTK*8J-7RYNR4%TQEH82CY%NP/U*HOFU1A5GFP8%$MJ:PRUR9YEXXU4RHB+71GFXFC92VEZEDXN5%V$IQALQ3ATTG1N 7HNE3:E477GJQ-/3UI6T.6PC8*GC$KMNX9 /O-8SE+1M 0 P1K2";
-  // renderResults(decodedText);
 
   $("#button1").click(function () {
     $("#result").removeClass("showx").addClass("hide");
@@ -361,13 +544,3 @@ window.onload = function () {
     }
   });
 };
-
-/**
-
-HC1:6BF1.N3DBSNAP53-OPX:5I Q-N0V0PUF247V.WM3G5GRRDN1:N9WC4/E2ZL7-/T.MN6.9RN79%2O72NB0XY6$BLZ$4R92OTPP74EE4H*ORW7:0P5IORZ69T4*U4CYS+D3MZ8J5C5XQ5VP7ES9UU:A3YZR%3LOU9TKRE8V+4O-3WAX24.MQ*6JRH.0HB.2*IBOSE%NLTFIW G:3577UX-3F7H%:D7L2SP3KXS0CHQI0VC3ZLC%O6I9U8M4R81U GFDOHWHKEFXBG+LRGV6EE5SYAFGI JIVISLKHB58.YN/L8B1ALO4.O20FJGYK7:B3/Q+RHZ97$QUG45:WV2 3UK011JZ42+SU8EFF+1/1J%AJT4OZQ0UGFNDIT9IXR9.63/NB6 1I%D488+7BJO309A.9T7D9R9GQ-SRWQ9GRHF7MSUX.BFDWO/OP9F0YGO6A/%N*N0YNCN*L*K6/IS$LC/98D2095I3KEDKJN%S.T6*B8 TUT99K%82WQN170PHWOQ7OAM0GI74YB0FB47CWAM2DQEM-DNH2QX5MQTT%8EVG55G9RT10JW-H6%L3Z8EMK:$I2CI%$P6KT9*8F68OL5QAH+CC RV21V QEC3K74K$S0WTN3UU+U9W5C-NO8D8A7JEWABQFAOK.GAYLVB31E56YLG4H9INAQA5T76MJUR%NJZH/A7%ODS7RFVEAB8-75GE4XQA9KA7WGZ*3+8O6EW:EJR/RO*9. ETA3933VN9ZQQAEC94NJLT2AQOCDF0TAGBF:192S45VG3AT 3FB1O/UO4RC 6B6RC$2.XO9IM5/NR.IFNCB-7AQP*FJSLJS+RF2TQUBHVH1QUQ K5H2L6AC.1SAVA*AFYDIVJZBOZCR*9F-UUFXRENHFD33P7/9US6TB+TWHROW6FPV4%4 IB*PN964Y6UJ:O1M39RBWWR/:5*:NNC39JN0:7ML9VHIL.NNOSQ2IQTK*8J-7RYNR4%TQEH82CY%NP/U*HOFU1A5GFP8%$MJ:PRUR9YEXXU4RHB+71GFXFC92VEZEDXN5%V$IQALQ3ATTG1N 7HNE3:E477GJQ-/3UI6T.6PC8*GC$KMNX9 /O-8SE+1M 0 P1K2
-
- */
-
-/**
- H4sIAAAAAAAAA7VU2W7bOBR971cEnsepbe6kDBSYeEvbaZ02bpI2gz5wtZnIkkNJdpKi/z5UZMfOgsFMgQH8IPMe3uWcw/vj1cFB6w+dZ6W9KVu9g7/i/3gyL8tl0et21+t1Z407eZh1EYCiq4M1Niu9TIvuCrZeP0bvRdupV0GG204qtZ5Ln3UyWz66
- */

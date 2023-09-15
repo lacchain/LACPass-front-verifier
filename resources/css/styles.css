@@ -201,7 +201,7 @@ td pre {
 #result {
   width: 100%;
   display: none;
-  font-weight: 400;
+  /* font-weight: 400; */
   color: #003835;
   font-size: 1.3rem;
   text-align: center;
@@ -304,7 +304,7 @@ ul.ks-cboxtags li label {
   cursor: pointer;
   text-align: left;
   font-size: 80% !important;
-  font-weight: lighter;
+  font-weight: 500;
 }
 ul.ks-cboxtags li input[type="checkbox"]:checked + label::before {
   content: "\f058";
@@ -471,7 +471,7 @@ ul.ks-cboxtags li label::before {
   border-width: 1.3px;
   border-color: #e5e5e5;
   border-style: solid;
-  font-size: 60%;
+  font-size: 70%;
   letter-spacing: 1px;
   text-align: left;
   flex-wrap: wrap;
@@ -521,7 +521,7 @@ ul.ks-cboxtags li label::before {
   margin: auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 40%;
+  width: 30%;
   -webkit-animation-name: slideIn;
   -webkit-animation-duration: 1s;
   animation-duration: 1s;
