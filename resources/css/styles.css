@@ -583,3 +583,23 @@ span.html5-qrcode-element:hover {
 span.html5-qrcode-element {
   text-decoration: none !important;
 }
+
+.errorBtn {
+  position: absolute;
+  height: 40px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #f65656;
+  color: #fff !important;
+  line-height: 40px;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+  text-align: center;
+
+  &:hover {
+    background-color: #ec3434;
+  }
+}

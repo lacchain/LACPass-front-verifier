@@ -86,6 +86,15 @@ itemsCatalog.set(
 </li>`
 );
 
+const items = [
+  "no-vaccination-standard-item",
+  "who-ddcc-standard-item",
+  "divoc-standar-item",
+  "smart-health-card-standard-item",
+  "eu-dcc-item",
+  "national-interoperability-item",
+];
+
 window.onload = function () {
   $.i18n().load({
     en: {
@@ -211,19 +220,7 @@ window.onload = function () {
 
     document.getElementById("viewDetailsBtnId").style.display = "none";
 
-    const items = [
-      "no-vaccination-standard-item",
-      "who-ddcc-standard-item",
-      "divoc-standar-item",
-      "smart-health-card-standard-item",
-      "eu-dcc-item",
-      "national-interoperability-item",
-    ];
-    items.map((item) => {
-      var element = document.getElementById(item);
-      if (element && element.parentNode)
-        element.parentNode.removeChild(element);
-    });
+    removeStandardItems(items);
     const certificateTypesContainer =
       document.getElementById("certificateTypesId");
     itemsCatalog.forEach((value) => {
@@ -268,13 +265,17 @@ window.onload = function () {
         break;
     }
 
+    removeStandardItems(itemsToRemove);
+    $("#step1").removeClass("showx").addClass("hide");
+    $("#result").addClass("showx").show();
+  }
+
+  function removeStandardItems(itemsToRemove) {
     itemsToRemove.map((item) => {
       var element = document.getElementById(item);
       if (element && element.parentNode)
         element.parentNode.removeChild(element);
     });
-    $("#step1").removeClass("showx").addClass("hide");
-    $("#result").addClass("showx").show();
   }
 
   function callApi(payload) {
@@ -289,22 +290,53 @@ window.onload = function () {
       (newStatusCode, newResponsePayload) => {
         //display the error on the form if needed
         if (newStatusCode !== 200) {
-          // TODO: handle error properly
-          // //set the formError field  with the error test
-          // document.querySelector("#" + formId + " .formError").innerHTML =
-          //   "Sorry,an error has occurred. Please try again";
-          // // Show (unhide) the form error field on the form
-          // document.querySelector("#" + formId + " .formError").style.display =
-          //   "block";
+          console.log("error response", newResponsePayload);
+          setErrorModal();
+          document.getElementById("interoperabilityMessageId").style.display =
+            "none";
+          removeStandardItems(items);
+          document.getElementById("errorUuid").innerHTML =
+            newResponsePayload.trace_id ? newResponsePayload.trace_id : "";
         } else {
           setFields(newResponsePayload);
           setWhoDDCCModal();
-          document.getElementById("loadingId").style.display = "none";
           document.getElementById("viewDetailsBtnId").style.display =
             "inline-block";
         }
+        document.getElementById("loadingId").style.display = "none";
       }
     );
+  }
+  function setErrorModal() {
+    /**render modal */
+    // Get the modal
+    const modal = document.getElementById("errorModalId");
+
+    // // Get the button that opens the modal
+    // const btn = document.getElementById("viewDetailsBtnId");
+
+    // // Get the <span> element that closes the modal
+    // const span = document.getElementsByClassName("close")[0];
+    const buttonToClose = document.getElementById("closeErrorModalAnchorId");
+
+    // // When the user clicks the button, open the modal
+    // btn.onclick = function () {
+    //   modal.style.display = "block";
+    // };
+
+    // When the user clicks on <span> (x), close the modal
+    buttonToClose.onclick = function () {
+      modal.style.display = "none";
+    };
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+    /**activate modal */
+    modal.style.display = "block";
   }
   function setFields(parsedResponse) {
     const { data } = parsedResponse;
@@ -376,7 +408,7 @@ window.onload = function () {
   function setWhoDDCCModal() {
     /**render modal */
     // Get the modal
-    const modal = document.getElementById("myModal");
+    const modal = document.getElementById("verificationResultModalId");
 
     // Get the button that opens the modal
     const btn = document.getElementById("viewDetailsBtnId");

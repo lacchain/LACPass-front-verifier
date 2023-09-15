@@ -169,7 +169,27 @@
     </div>
 
     <div class="wrapper">
-      <div id="myModal" class="modal">
+      <div id="errorModalId" class="modal">
+        <div class="modal-content">
+          <div class="wrapper" style="align-items: center">
+            <img src="./resources/img/alert.png" width="44" height="38" />
+
+            <span class="title" style="font-weight: 500">Oh No!</span>
+            <p class="subtitle" style="text-align: center; font-weight: 300">
+              An error has ocurred while validating the certificate.
+            </p>
+            <div class="identificationData" style="font-size: 50%">
+              <p style="font-weight: 400">Error Id:</p>
+              <p id="errorUuid"></p>
+            </div>
+          </div>
+          <a class="errorBtn" id="closeErrorModalAnchorId">Dismiss</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrapper">
+      <div id="verificationResultModalId" class="modal">
         <span class="close">&times;</span>
         <div class="modal-content">
           <div class="wrapper">
