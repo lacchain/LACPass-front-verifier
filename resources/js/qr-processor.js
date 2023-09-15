@@ -133,6 +133,7 @@ window.onload = function () {
       batchNumberLabel: "Batch Number",
       identificationDataLabel: "Identification Data",
       viewDetailsText: "View Details",
+      validity: "Validity",
     },
     es: {
       next: "Siguiente ›",
@@ -171,6 +172,7 @@ window.onload = function () {
       batchNumberLabel: "Número de Lote",
       identificationDataLabel: "Datos de identificación",
       viewDetailsText: "Ver Detalles",
+      validity: "Validez",
     },
   });
 
@@ -347,6 +349,11 @@ window.onload = function () {
     if (!isValid) {
       // TODO: show icon for invalid
       $("#who-dcc").prop("checked", false);
+      document.getElementById("isCertificateValidId").src =
+        "./resources/img/alert.png";
+    } else {
+      document.getElementById("isCertificateValidId").src =
+        "./resources/img/check.png";
     }
 
     const {
@@ -401,8 +408,6 @@ window.onload = function () {
     document.getElementById("numberOfDosesId").innerHTML = dose;
     document.getElementById("dateOfVaccinationId").innerHTML = date;
     document.getElementById("batchId").innerHTML = lot;
-    document.getElementById("isCertificateValidId").src =
-      "./resources/img/check_3472620.png";
   }
 
   function setWhoDDCCModal() {
@@ -436,7 +441,7 @@ window.onload = function () {
     modal.style.display = "block";
   }
 
-  function onScanSuccess(decodedText, decodedResult) {
+  function onScanSuccess(decodedText, _decodedResult) {
     if (html5QrcodeScanner.getState() !== Html5QrcodeScannerState.NOT_STARTED) {
       // Add this check to ensure success callback is not being called
       // from file based scanner.
@@ -447,7 +452,7 @@ window.onload = function () {
 
     if (decodedText !== lastResult) {
       console.log("decoded Text", decodedText);
-      console.log("decoded Result", decodedResult);
+      // console.log("decoded Result", decodedResult);
       ++countResults;
       lastResult = decodedText;
 

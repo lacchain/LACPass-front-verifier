@@ -465,7 +465,6 @@ ul.ks-cboxtags li label::before {
   margin: auto;
   flex-direction: row;
   display: flex;
-  /* height: 8%; */
   justify-content: space-between;
   border-radius: 5px;
   border-width: 1.3px;
@@ -602,4 +601,13 @@ span.html5-qrcode-element {
   &:hover {
     background-color: #ec3434;
   }
+}
+
+/******** Base  ********/
+.row-element {
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  justify-content: space-between;
+  align-items: center;
 }
