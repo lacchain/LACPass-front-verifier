@@ -262,6 +262,7 @@ window.onload = function () {
       default:
         $("#none").prop("checked", true);
         itemsToRemove = items;
+        document.getElementById("loadingId").style.display = "none";
         document.getElementById("interoperabilityMessageId").innerHTML =
           "Unsupported/No soportado"; // TODO: improve
         break;
