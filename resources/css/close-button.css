@@ -1,0 +1,75 @@
+.close {
+  width: 40px;
+  height: 40px;
+  position: relative;
+  background: #455a64;
+  border-radius: 50%;
+  box-shadow: 0 0 20px -5px rgba(255, 255, 255, 0.5);
+  transition: 0.25s ease-in-out;
+  cursor: pointer;
+  animation: fade-in 0.5s ease-out 0.25s both;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+}
+.close .circle path {
+  stroke: white;
+  fill: none;
+  stroke-width: 1px;
+  stroke-linecap: round;
+  animation: progress 0.5s ease-out 0.25s both;
+}
+@keyframes progress {
+  from {
+    stroke-dasharray: 0 100;
+  }
+}
+.close span {
+  display: block;
+  width: 8px;
+  height: 2px;
+  background: white;
+  box-shadow: 0 0 20px -5px rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  position: absolute;
+  transition: 0.25s ease-in-out;
+  animation: slide-in 0.5s ease-in-out 0.25s both;
+}
+@keyframes slide-in {
+  from {
+    width: 0;
+  }
+}
+.close span:nth-child(1) {
+  top: 12.3333333333px;
+  left: 13.3333333333px;
+  transform: rotate(45deg);
+  transform-origin: top left;
+}
+.close span:nth-child(2) {
+  top: 12.3333333333px;
+  right: 13.3333333333px;
+  transform: rotate(-45deg);
+  transform-origin: top right;
+}
+.close span:nth-child(3) {
+  bottom: 12.3333333333px;
+  left: 13.3333333333px;
+  transform: rotate(-45deg);
+  transform-origin: bottom left;
+}
+.close span:nth-child(4) {
+  bottom: 12.3333333333px;
+  right: 13.3333333333px;
+  transform: rotate(45deg);
+  transform-origin: bottom right;
+}
+.close:hover {
+  background: #37474f;
+}
+.close:hover span {
+  width: 10px;
+}/*# sourceMappingURL=close-button.css.map */

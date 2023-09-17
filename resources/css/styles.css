@@ -540,15 +540,30 @@ select.html5-qrcode-element:hover {
 }
 
 /* The Close Button */
-.close {
-  color: #aaaaaa;
-  float: right;
-  font-size: 28px;
+.close-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 3%;
+
+  /* border-style: solid;
+  border-width: thin;
+  border-color: #27bb22; */
+
+  color: #ffffff !important;
+  float: none !important;
+  font-size: 180%;
   font-weight: bold;
+  margin-left: 66%;
+  -webkit-animation-name: slideIn;
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  animation-name: slideIn;
+  border-radius: 16px 16px 16px 16px !important;
 }
 
-.close:hover,
-.close:focus {
+.close-wrapper:hover,
+.close-wrapper:focus {
   color: #000;
   text-decoration: none;
   cursor: pointer;
@@ -621,4 +636,21 @@ span.html5-qrcode-element {
   margin: 0;
   justify-content: space-between;
   align-items: center;
+
+  border-radius: 5px;
+
+  background-color: #e5e5e5;
+  padding: 3%;
+}
+
+.icon-description {
+  display: flex;
+  flex-direction: row;
+  width: 45%;
+  align-items: center;
+}
+
+.icon-description-svg {
+  font-size: 90%;
+  color: #ffc107;
 }

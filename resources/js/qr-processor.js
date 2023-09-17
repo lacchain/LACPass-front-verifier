@@ -121,19 +121,20 @@ window.onload = function () {
       dateOfBirthLabel: "Date of birth",
       genderLabel: "Gender",
       documentNumberLabel: "Doc. Number",
-      vaccinationDetailsLabel: "Vaccination Details",
+      vaccinationDetailsLabel: "Vaccination",
       certificateIdentifierLabel: "Certificate Identifier",
       certificateIssuerLabel: "Issuer",
-      vaccineDetailsLabel: "Vaccine Details",
+      vaccineDetailsLabel: "Vaccine",
       productNameLabel: "Product Name",
       atcCodeLabel: "ATC Code",
       vaccinationCentreLabel: "Vaccination Centre",
       numberOfDosesLabel: "Number of Doses",
       dateOfVaccinationLabel: "Date of vaccination",
       batchNumberLabel: "Batch Number",
-      identificationDataLabel: "Identification Data",
+      identificationDataLabel: "Identification",
       viewDetailsText: "View Details",
-      validity: "Validity",
+      validCertificate: "Valid Certificate",
+      invalidCertificate: "Invalid Certificate",
     },
     es: {
       next: "Siguiente ›",
@@ -160,19 +161,20 @@ window.onload = function () {
       dateOfBirthLabel: "Fecha de nac.",
       genderLabel: "Género",
       documentNumberLabel: "Nº de doc.",
-      vaccinationDetailsLabel: "Datos de la vacunación",
-      certificateIdentifierLabel: "Identificador del certificado",
+      vaccinationDetailsLabel: "Vacunación",
+      certificateIdentifierLabel: "Id. del certificado",
       certificateIssuerLabel: "Emisor",
-      vaccineDetailsLabel: "Datos de la vacuna",
+      vaccineDetailsLabel: "Vacuna",
       productNameLabel: "Nombre del producto",
       atcCodeLabel: "ATC Code",
       vaccinationCentreLabel: "Centro de Vacunación",
       numberOfDosesLabel: "Número de dosis",
       dateOfVaccinationLabel: "Fecha de vacunación",
       batchNumberLabel: "Número de Lote",
-      identificationDataLabel: "Datos de identificación",
+      identificationDataLabel: "Identificación",
       viewDetailsText: "Ver Detalles",
-      validity: "Validez",
+      validCertificate: "Certificado Válido",
+      invalidCertificate: "Certificado Inválido",
     },
   });
 
@@ -348,13 +350,19 @@ window.onload = function () {
     }
     const { isValid, ddccCoreDataSet } = data;
     if (!isValid) {
-      // TODO: show icon for invalid
       $("#who-dcc").prop("checked", false);
-      document.getElementById("isCertificateValidId").src =
+      document.getElementById("isValidCertificateId").src =
         "./resources/img/alert.png";
+      document.getElementById("invalidCertificateTextId").style.display =
+        "inline-block";
+      document.getElementById("validCertificateTextId").style.display = "none";
     } else {
-      document.getElementById("isCertificateValidId").src =
+      document.getElementById("isValidCertificateId").src =
         "./resources/img/check.png";
+      document.getElementById("invalidCertificateTextId").style.display =
+        "none";
+      document.getElementById("validCertificateTextId").style.display =
+        "inline-block";
     }
 
     const {
