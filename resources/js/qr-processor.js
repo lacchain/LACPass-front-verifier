@@ -236,6 +236,7 @@ window.onload = function () {
     });
 
     let itemsToRemove = [];
+    document.getElementById("step2MapId").src = "mapa.jpg";
 
     switch (compatibility) {
       case "DIVOC":
@@ -244,6 +245,7 @@ window.onload = function () {
         itemsToRemove = items.filter((item) => item !== "divoc-standar-item");
         break;
       case "WHO-DCC":
+        document.getElementById("step2MapId").src = "mapa2.jpg";
         $("#who-dcc").prop("checked", true);
         itemsToRemove = items.filter(
           (item) => item !== "who-ddcc-standard-item"
@@ -565,6 +567,9 @@ window.onload = function () {
   });
 
   $("#button5").click(function () {
+    html5QrcodeScanner.clear().then(() => {
+      initializeQrCodeScanner();
+    });
     $("#step3").removeClass("showx").addClass("hide");
     $("#step1").addClass("showx").show();
     lastResult = "";
