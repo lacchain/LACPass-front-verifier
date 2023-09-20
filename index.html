@@ -183,7 +183,11 @@
             <p class="subtitle" style="text-align: center; font-weight: 300">
               An error has ocurred while validating the certificate.
             </p>
-            <div class="identificationData" style="font-size: 50%">
+            <div
+              class="identificationData"
+              id="errorIdContainerId"
+              style="font-size: 50%"
+            >
               <p style="font-weight: 400">Error Id:</p>
               <p id="errorUuid"></p>
             </div>
@@ -330,6 +334,10 @@
                 <div class="dataLabel" data-i18n="batchNumberLabel"></div>
                 <div class="contentData" id="batchId">XXXX</div>
               </div>
+              <div class="element">
+                <div class="dataLabel" data-i18n="countryLabel"></div>
+                <div class="contentData" id="countryId">XXXX</div>
+              </div>
             </div>
           </div>
         </div>
@@ -365,4 +373,5 @@
   <script src="resources/js/qr-processor.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
   <script src="resources/js/api-interactions.js"></script>
+  <script src="resources/js/countryCodesAlpha2.js"></script>
 </html>

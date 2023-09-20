@@ -135,6 +135,7 @@ window.onload = function () {
       viewDetailsText: "View Details",
       validCertificate: "Valid Certificate",
       invalidCertificate: "Invalid Certificate",
+      countryLabel: "Country",
     },
     es: {
       next: "Siguiente ›",
@@ -175,6 +176,7 @@ window.onload = function () {
       viewDetailsText: "Ver Detalles",
       validCertificate: "Certificado Válido",
       invalidCertificate: "Certificado Inválido",
+      countryLabel: "País",
     },
   });
 
@@ -302,11 +304,17 @@ window.onload = function () {
           removeStandardItems(items);
           document.getElementById("errorUuid").innerHTML =
             newResponsePayload.trace_id ? newResponsePayload.trace_id : "";
-        } else {
+        } else if (newResponsePayload) {
           setFields(newResponsePayload);
           setWhoDDCCModal();
           document.getElementById("viewDetailsBtnId").style.display =
             "inline-block";
+        } else {
+          setErrorModal();
+          document.getElementById("interoperabilityMessageId").style.display =
+            "none";
+          removeStandardItems(items);
+          document.getElementById("errorIdContainerId").style.display = "none";
         }
         document.getElementById("loadingId").style.display = "none";
       }
@@ -417,6 +425,11 @@ window.onload = function () {
     document.getElementById("numberOfDosesId").innerHTML = dose;
     document.getElementById("dateOfVaccinationId").innerHTML = date;
     document.getElementById("batchId").innerHTML = lot;
+    document.getElementById("countryId").innerHTML = alpha2CountryCodes.get(
+      countryCode
+    )
+      ? alpha2CountryCodes.get(countryCode)
+      : countryCode;
   }
 
   function setWhoDDCCModal() {
@@ -461,7 +474,6 @@ window.onload = function () {
 
     if (decodedText !== lastResult) {
       console.log("decoded Text", decodedText);
-      // console.log("decoded Result", decodedResult);
       ++countResults;
       lastResult = decodedText;
 
