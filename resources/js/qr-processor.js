@@ -421,7 +421,10 @@ window.onload = function () {
     document.getElementById("certificateIdentifierId").innerHTML = value;
     document.getElementById("certificateIssuerId").innerHTML =
       issuerIdentifierValue;
-    document.getElementById("brandCodeId").innerHTML = brandCode;
+    const mappedBrandCode = MEDICINAL_PRODUCT_NAMES.get(brandCode);
+    document.getElementById("brandCodeId").innerHTML = mappedBrandCode
+      ? mappedBrandCode
+      : brandCode;
     document.getElementById("atcCodeId").innerHTML = vaccineCode;
     document.getElementById("vaccinationCentreId").innerHTML = centre;
     document.getElementById("numberOfDosesId").innerHTML = dose;
