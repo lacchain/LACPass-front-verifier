@@ -35,5 +35,11 @@
   .icon-description {
     width: 58%;
   }
+  .invalid-certificate-main {
+    width: 100%;
+  }
+  .li-item {
+    width: 100%;
+  }
 }
 /*padding: 2px 6px; top bottom left right*/

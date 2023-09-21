@@ -15,81 +15,57 @@ function parseJwt(token) {
 }
 
 const itemsCatalog = new Map();
+
+const getLiItem = (itemId, text) => {
+  return `
+  <div
+    class="li-item"
+    id="${itemId}"
+  >
+    <div
+      class="subtitle"
+    >${text}</div>
+    <img
+      class="li-icon"
+      id="interoperableCheckId"
+      src="./resources/img/check.png"
+      alt="logo"
+    />
+  </div>
+`;
+};
+
 itemsCatalog.set(
   "no-vaccination-standard-item",
-  `<li id="no-vaccination-standard-item">
-<input type="checkbox" id="none" value="Order one" />
-<label for="none" data-i18n="none"
-  >No vaccination standard</label
->
-</li>`
+  getLiItem("no-vaccination-standard-item", "No vaccination standard")
 );
+
 itemsCatalog.set(
   "who-ddcc-standard-item",
-  `<li id="who-ddcc-standard-item" class="item-in-list">
-  <div class="label-container">
-    <input
-      type="checkbox"
-      id="who-dcc"
-      value="Order one"
-    />
-    <label for="who-dcc" data-i18n="who_dcc"
-      >WHO DDCC standard</label
-    >
-  </div>
-</li>`
+  getLiItem("who-ddcc-standard-item", "WHO DDCC standard")
 );
+
 itemsCatalog.set(
-  "divoc-standar-item",
-  `<li id="divoc-standar-item">
-<input type="checkbox" id="divoc" value="Order Two" />
-<label for="divoc" data-i18n="divoc"
-  >DIVOC standard</label
->
-</li>`
+  "divoc-standard-item",
+  getLiItem("divoc-standard-item", "DIVOC standard")
 );
+
 itemsCatalog.set(
   "smart-health-card-standard-item",
-  `<li id="smart-health-card-standard-item">
-  <input type="checkbox" id="shc" value="Order Two" />
-  <label for="shc" data-i18n="shc"
-    >Smart Health Card standard</label
-  >
-</li>`
+  getLiItem("smart-health-card-standard-item", "Smart Health Card standard")
 );
-itemsCatalog.set(
-  "eu-dcc-item",
-  `<li id="eu-dcc-item" class="item-in-list">
-  <div class="label-container">
-    <input
-      type="checkbox"
-      id="eu-dcc"
-      value="Order Two"
-    />
-    <label class="label" for="eu-dcc" data-i18n="eu_dcc"
-      >EU DCC standard</label
-    >
-  </div>
-</li>`
-);
+
+itemsCatalog.set("eu-dcc-item", getLiItem("eu-dcc-item", "EU DCC standard"));
+
 itemsCatalog.set(
   "national-interoperability-item",
-  `<li id="national-interoperability-item">
-  <input
-    type="checkbox"
-    id="national"
-    value="Order Two"
-  />
-  <label for="national" data-i18n="national"
-    >Only national interoperability</label
-  >
-</li>`
+  getLiItem("national-interoperability-item", "Only national interoperability")
 );
 
 const items = [
   "no-vaccination-standard-item",
   "who-ddcc-standard-item",
-  "divoc-standar-item",
+  "divoc-standard-item",
   "smart-health-card-standard-item",
   "eu-dcc-item",
   "national-interoperability-item",
@@ -242,7 +218,7 @@ window.onload = function () {
       case "DIVOC":
         $("#divoc").prop("checked", true);
         $("#national").prop("checked", true);
-        itemsToRemove = items.filter((item) => item !== "divoc-standar-item");
+        itemsToRemove = items.filter((item) => item !== "divoc-standard-item");
         break;
       case "WHO-DCC":
         document.getElementById("step2MapId").src = "mapa2.jpg";
@@ -326,20 +302,7 @@ window.onload = function () {
     /**render modal */
     // Get the modal
     const modal = document.getElementById("errorModalId");
-
-    // // Get the button that opens the modal
-    // const btn = document.getElementById("viewDetailsBtnId");
-
-    // // Get the <span> element that closes the modal
-    // const span = document.getElementsByClassName("close")[0];
     const buttonToClose = document.getElementById("closeErrorModalAnchorId");
-
-    // // When the user clicks the button, open the modal
-    // btn.onclick = function () {
-    //   modal.style.display = "block";
-    // };
-
-    // When the user clicks on <span> (x), close the modal
     buttonToClose.onclick = function () {
       modal.style.display = "none";
     };
@@ -366,12 +329,19 @@ window.onload = function () {
       document.getElementById("invalidCertificateTextId").style.display =
         "inline-block";
       document.getElementById("validCertificateTextId").style.display = "none";
+      document.getElementById("invalidCertificateMainId").style.display =
+        "flex";
+      document.getElementById("interoperableCheckId").style.display = "none";
     } else {
       document.getElementById("isValidCertificateId").src =
         "./resources/img/check.png";
       document.getElementById("invalidCertificateTextId").style.display =
         "none";
       document.getElementById("validCertificateTextId").style.display =
+        "inline-block";
+      document.getElementById("invalidCertificateMainId").style.display =
+        "none";
+      document.getElementById("interoperableCheckId").style.display =
         "inline-block";
     }
 
