@@ -386,7 +386,10 @@ window.onload = function () {
 
     document.getElementById("patientNameId").innerHTML = name;
     document.getElementById("dateOfBirthId").innerHTML = birthDate;
-    document.getElementById("genderId").innerHTML = sex;
+    document.getElementById("genderId").innerHTML =
+      typeof sex === "string" && sex.length > 1
+        ? sex[0].toUpperCase() + sex.substring(1)
+        : null;
     document.getElementById("documentNumberId").innerHTML = identifier;
     document.getElementById("certificateIdentifierId").innerHTML = value;
     document.getElementById("certificateIssuerId").innerHTML =

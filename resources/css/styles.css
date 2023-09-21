@@ -536,6 +536,9 @@ select.html5-qrcode-element:hover {
   width: 67%;
   margin-left: 3%;
   font-weight: 400;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 /***********Modal***************/
