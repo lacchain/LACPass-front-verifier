@@ -101,8 +101,8 @@ window.onload = function () {
       certificateIdentifierLabel: "Certificate Identifier",
       certificateIssuerLabel: "Issuer",
       vaccineDetailsLabel: "Vaccine",
-      productNameLabel: "Product Name",
-      atcCodeLabel: "ATC Code",
+      productNameLabel: "Brand",
+      atcCodeLabel: "Vaccine Name",
       vaccinationCentreLabel: "Vaccination Centre",
       numberOfDosesLabel: "Number of Doses",
       dateOfVaccinationLabel: "Date of vaccination",
@@ -112,6 +112,8 @@ window.onload = function () {
       validCertificate: "Valid Certificate",
       invalidCertificate: "Invalid Certificate",
       countryLabel: "Country",
+      diseaseLabel: "Disease",
+      nextDoseLabel: "Next Dose",
     },
     es: {
       next: "Siguiente ›",
@@ -142,8 +144,8 @@ window.onload = function () {
       certificateIdentifierLabel: "Id. del certificado",
       certificateIssuerLabel: "Emisor",
       vaccineDetailsLabel: "Vacuna",
-      productNameLabel: "Nombre del producto",
-      atcCodeLabel: "ATC Code",
+      productNameLabel: "Marca del Producto",
+      atcCodeLabel: "Nombre de la Vacuna",
       vaccinationCentreLabel: "Centro de Vacunación",
       numberOfDosesLabel: "Número de dosis",
       dateOfVaccinationLabel: "Fecha de vacunación",
@@ -153,6 +155,8 @@ window.onload = function () {
       validCertificate: "Certificado Válido",
       invalidCertificate: "Certificado Inválido",
       countryLabel: "País",
+      disease: "Enfermedad",
+      nextDoseLabel: "Siguiente Dosis",
     },
   });
 
@@ -370,7 +374,17 @@ window.onload = function () {
     if (!issuerIdentifierValue) {
       // TODO: show error message
     }
-    const { brand, centre, country, date, dose, lot, vaccine } = vaccination;
+    const {
+      brand,
+      centre,
+      country,
+      date,
+      dose,
+      lot,
+      vaccine,
+      disease,
+      nextDose,
+    } = vaccination;
     const brandCode = brand && brand.code ? brand.code : null;
     if (!brandCode) {
       // TODO: show error message
@@ -383,6 +397,8 @@ window.onload = function () {
     if (!vaccineCode) {
       // TODO: show error message
     }
+
+    const diseaseCode = disease && disease.code ? disease.code : null;
 
     document.getElementById("patientNameId").innerHTML = name;
     document.getElementById("dateOfBirthId").innerHTML = birthDate;
@@ -402,14 +418,21 @@ window.onload = function () {
     document.getElementById("atcCodeId").innerHTML = vaccineName
       ? vaccineName
       : vaccineCode;
+
+    const diseaseName = DISEASE_LIST.get(diseaseCode);
+    document.getElementById("diseaseId").innerHTML = diseaseName
+      ? diseaseName
+      : vaccineCode;
+
     document.getElementById("vaccinationCentreId").innerHTML = centre;
     document.getElementById("numberOfDosesId").innerHTML = dose;
     document.getElementById("dateOfVaccinationId").innerHTML = date;
+    document.getElementById("nextDoseId").innerHTML = nextDose;
     document.getElementById("batchId").innerHTML = lot;
-    document.getElementById("countryId").innerHTML = alpha2CountryCodes.get(
+    document.getElementById("countryId").innerHTML = alpha3CountryCodes.get(
       countryCode
     )
-      ? alpha2CountryCodes.get(countryCode)
+      ? alpha3CountryCodes.get(countryCode)
       : countryCode;
   }
 
