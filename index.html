@@ -87,7 +87,12 @@
                 <div class="row">
                   <div class="col-lg-12 results" style="text-align: center">
                     <div class="map">
-                      <img src="mapa.jpg" alt="Map" width="100%" />
+                      <img
+                        id="step2MapId"
+                        src="mapa.jpg"
+                        alt="Map"
+                        width="100%"
+                      />
                     </div>
                     <div class="details">
                       <span
@@ -98,6 +103,22 @@
                         id="certificateTypesId"
                         class="ks-cboxtags p-0 mt-3"
                       ></ul>
+
+                      <div
+                        class="invalid-certificate-main"
+                        id="invalidCertificateMainId"
+                      >
+                        <div
+                          class="subtitle"
+                          data-i18n="invalidCertificate"
+                        ></div>
+                        <img
+                          src="./resources/img/alert.png"
+                          alt="logo"
+                          class="li-icon"
+                        />
+                      </div>
+
                       <a
                         class="btn a"
                         id="viewDetailsBtnId"
@@ -183,7 +204,11 @@
             <p class="subtitle" style="text-align: center; font-weight: 300">
               An error has ocurred while validating the certificate.
             </p>
-            <div class="identificationData" style="font-size: 50%">
+            <div
+              class="identificationData"
+              id="errorIdContainerId"
+              style="font-size: 50%"
+            >
               <p style="font-weight: 400">Error Id:</p>
               <p id="errorUuid"></p>
             </div>
@@ -218,7 +243,7 @@
           <div class="wrapper">
             <div class="qr-sub-block">
               <div class="wrapper">
-                <div class="row-element">
+                <div class="row-styled">
                   <div
                     class="subtitle"
                     id="validCertificateTextId"
@@ -256,7 +281,7 @@
                   <div class="contentData" id="dateOfBirthId">0000-00-00</div>
                 </div>
                 <div class="element">
-                  <div class="dataLabel" data-i18n="genderLabel"></div>
+                  <div class="dataLabel" data-i18n="sexLabel"></div>
                   <div class="contentData" id="genderId">XXXX</div>
                 </div>
                 <div class="element">
@@ -330,6 +355,10 @@
                 <div class="dataLabel" data-i18n="batchNumberLabel"></div>
                 <div class="contentData" id="batchId">XXXX</div>
               </div>
+              <div class="element">
+                <div class="dataLabel" data-i18n="countryLabel"></div>
+                <div class="contentData" id="countryId">XXXX</div>
+              </div>
             </div>
           </div>
         </div>
@@ -365,4 +394,8 @@
   <script src="resources/js/qr-processor.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.3/highlight.min.js"></script>
   <script src="resources/js/api-interactions.js"></script>
+  <script src="resources/js/countryCodesAlpha2.js"></script>
+  <script src="resources/js/ddccMedicinalCodeMapper.js"></script>
+  <script src="resources/js/vaccineList.js"></script>
+  "
 </html>

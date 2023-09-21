@@ -89,6 +89,7 @@ app.client.request = (
           const parsedResponse = JSON.parse(responseReturned);
           callback(statusCode, parsedResponse);
         } catch (e) {
+          console.log("Error processing response", e);
           callback(statusCode, false);
         }
       }
