@@ -395,7 +395,10 @@ window.onload = function () {
     document.getElementById("brandCodeId").innerHTML = mappedBrandCode
       ? mappedBrandCode
       : brandCode;
-    document.getElementById("atcCodeId").innerHTML = vaccineCode;
+    const vaccineName = VACCINE_LIST.get(vaccineCode);
+    document.getElementById("atcCodeId").innerHTML = vaccineName
+      ? vaccineName
+      : vaccineCode;
     document.getElementById("vaccinationCentreId").innerHTML = centre;
     document.getElementById("numberOfDosesId").innerHTML = dose;
     document.getElementById("dateOfVaccinationId").innerHTML = date;

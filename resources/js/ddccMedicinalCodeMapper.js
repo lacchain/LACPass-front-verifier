@@ -1,3 +1,4 @@
+// reference: http://lacpass.create.cl:8089/ValueSet-ddcc-brands.html
 const MEDICINAL_PRODUCT_NAMES = new Map();
 MEDICINAL_PRODUCT_NAMES.set("XM68M6", "COVID-19 vaccine");
 MEDICINAL_PRODUCT_NAMES.set("XM1NL1", "COVID-19 vaccine, inactivated virus");
