@@ -198,12 +198,6 @@ window.onload = function () {
         compatibility = "National";
     } catch (e) {}
 
-    $("#eu-dcc").prop("checked", false);
-    $("#national").prop("checked", false);
-    $("#shc").prop("checked", false);
-    $("#none").prop("checked", false);
-    $("#divoc").prop("checked", false);
-
     document.getElementById("viewDetailsBtnId").style.display = "none";
 
     removeStandardItems(items);
@@ -217,38 +211,29 @@ window.onload = function () {
 
     let itemsToRemove = [];
     document.getElementById("step2MapId").src = "mapa.jpg";
-
+    document.getElementById("loadingId").style.display = "none";
     switch (compatibility) {
       case "DIVOC":
-        $("#divoc").prop("checked", true);
-        $("#national").prop("checked", true);
         itemsToRemove = items.filter((item) => item !== "divoc-standard-item");
         break;
       case "WHO-DCC":
-        document.getElementById("step2MapId").src = "mapa2.jpg";
-        $("#who-dcc").prop("checked", true);
         itemsToRemove = items.filter(
           (item) => item !== "who-ddcc-standard-item"
         );
         callApi(decodedText);
         break;
       case "National":
-        $("#national").prop("checked", true);
         itemsToRemove = items.filter(
           (item) => item !== "national-interoperability-item"
         );
         break;
       case "SHC":
-        $("#shc").prop("checked", true);
-        $("#national").prop("checked", true);
         itemsToRemove = items.filter(
           (item) => item !== "smart-health-card-standard-item"
         );
         break;
       default:
-        $("#none").prop("checked", true);
         itemsToRemove = items;
-        document.getElementById("loadingId").style.display = "none";
         document.getElementById("interoperabilityMessageId").innerHTML =
           "Unsupported/No soportado"; // TODO: improve
         break;
@@ -257,6 +242,7 @@ window.onload = function () {
     removeStandardItems(itemsToRemove);
     $("#step1").removeClass("showx").addClass("hide");
     $("#result").addClass("showx").show();
+    document.getElementById("invalidCertificateMainId").style.display = "none";
   }
 
   function removeStandardItems(itemsToRemove) {
@@ -278,7 +264,22 @@ window.onload = function () {
       payload,
       (newStatusCode, newResponsePayload) => {
         //display the error on the form if needed
-        if (newStatusCode !== 200) {
+        if (
+          newStatusCode == 400 &&
+          newResponsePayload &&
+          newResponsePayload.message === "message decoding failed"
+        ) {
+          var element = document.getElementById("who-ddcc-standard-item");
+          if (element && element.parentNode)
+            element.parentNode.removeChild(element);
+
+          const certificateTypesContainer =
+            document.getElementById("certificateTypesId");
+
+          const node = document.createElement("li");
+          node.innerHTML = itemsCatalog.get("eu-dcc-item");
+          certificateTypesContainer.appendChild(node);
+        } else if (newStatusCode !== 200) {
           console.log("error response", newResponsePayload);
           setErrorModal();
           document.getElementById("interoperabilityMessageId").style.display =
@@ -287,6 +288,7 @@ window.onload = function () {
           document.getElementById("errorUuid").innerHTML =
             newResponsePayload.trace_id ? newResponsePayload.trace_id : "";
         } else if (newResponsePayload) {
+          document.getElementById("step2MapId").src = "mapa2.jpg";
           setFields(newResponsePayload);
           setWhoDDCCModal();
           document.getElementById("viewDetailsBtnId").style.display =
@@ -327,7 +329,6 @@ window.onload = function () {
     }
     const { isValid, ddccCoreDataSet } = data;
     if (!isValid) {
-      $("#who-dcc").prop("checked", false);
       document.getElementById("isValidCertificateId").src =
         "./resources/img/alert.png";
       document.getElementById("invalidCertificateTextId").style.display =
@@ -413,7 +414,9 @@ window.onload = function () {
     const mappedBrandCode = MEDICINAL_PRODUCT_NAMES.get(brandCode);
     document.getElementById("brandCodeId").innerHTML = mappedBrandCode
       ? mappedBrandCode
-      : brandCode;
+      : brandCode
+      ? brandCode
+      : undefined;
     const vaccineName = VACCINE_LIST.get(vaccineCode);
     document.getElementById("atcCodeId").innerHTML = vaccineName
       ? vaccineName
@@ -422,7 +425,9 @@ window.onload = function () {
     const diseaseName = DISEASE_LIST.get(diseaseCode);
     document.getElementById("diseaseId").innerHTML = diseaseName
       ? diseaseName
-      : vaccineCode;
+      : diseaseCode
+      ? diseaseCode
+      : undefined;
 
     document.getElementById("vaccinationCentreId").innerHTML = centre;
     document.getElementById("numberOfDosesId").innerHTML = dose;
